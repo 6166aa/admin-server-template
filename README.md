@@ -1,2 +1,2 @@
-# admin-server
-通用的nest.js的后台项目
+# admin-server-template
+通用的nest.js的后台项目模板
