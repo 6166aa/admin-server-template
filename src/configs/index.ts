@@ -1,3 +1,4 @@
 import orm from './orm.config'
-const appConfig = [orm];
+import jwt from './jwt.config'
+const appConfig = [orm,jwt];
 export default appConfig;

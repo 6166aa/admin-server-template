@@ -1,30 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Page } from 'src/common/dto/page.dto';
+import { BaseEntityService } from 'src/common/services/base-entity.service';
+import { FindManyOptions, Repository } from 'typeorm';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
 
 @Injectable()
-export class RolesService {
-  // constructor(@InjectRepository(Role) private readonly repo:Repository<Role>){}
-  create(createRoleDto: CreateRoleDto) {
-    return 'This action adds a new role';
+export class RolesService extends BaseEntityService<Role>{
+  constructor(@InjectRepository(Role) repo: Repository<Role>) {
+    super(repo);
   }
 
-  findAll() {
-    return `This action returns all roles`;
+  async allocateUser(id, userId) {
+    await this.repo.createQueryBuilder('role')
+      .relation('users')
+      .of(id)
+      .add(userId);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} role`;
+  async removeUser(id, userId) {
+    await this.repo.createQueryBuilder('role')
+      .relation('users')
+      .of(id)
+      .remove(userId);
   }
 
-  update(id: number, updateRoleDto: UpdateRoleDto) {
-    return `This action updates a #${id} role`;
+  async getResourcesByRoles(role: number[]) {
+    return this.repo.findByIds(role, {
+      relations: ['resources']
+    });
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} role`;
+  
+  async allocateResources(id, roleIds) {
+    await this.repo.createQueryBuilder('role')
+      .relation('resources')
+      .of(id)
+      .add(roleIds);
   }
 }

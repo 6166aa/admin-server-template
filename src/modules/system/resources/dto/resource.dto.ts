@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsEnum } from "class-validator";
 import { ResourceType } from "src/common/enums";
 
-export class CreateResourceDto {
+export class ResourceDto {
   //自身信息
   @IsNotEmpty({message:'资源类型不能为空'})
   @IsEnum(ResourceType,{
@@ -25,6 +25,6 @@ export class CreateResourceDto {
   isEnd?:number;
 
   desc?:string;
-  //父级id
-  parentId?:number;
+
+  children:ResourceDto[]
 }

@@ -7,4 +7,4 @@ import { UsersModule } from './users/users.module';
 @Module({
   imports: [UsersModule, RolesModule, ResourcesModule, AuthModule],
 })
-export class SystemModule {}
+export class SystemModule { }
